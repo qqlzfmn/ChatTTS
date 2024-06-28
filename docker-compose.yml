@@ -1,0 +1,24 @@
+services:
+  chattts:
+    image: chattts
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chattts
+    environment:
+      - HF_ENDPOINT=https://hf-mirror.com
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    working_dir: /app
+    entrypoint: python
+    command: /app/examples/web/webui.py
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
